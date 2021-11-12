@@ -10,7 +10,7 @@ List<Widget> pages = [
 ];
 
 class CustomPageView extends StatefulWidget {
-  Function(int)? onChanged;
+  final Function(int) onChanged;
   final Widget Function(BuildContext, int) itemBuilder;
   final int itemCount;
 
@@ -18,7 +18,7 @@ class CustomPageView extends StatefulWidget {
     Key? key,
     required this.itemBuilder,
     required this.itemCount,
-    this.onChanged,
+    required this.onChanged,
   }) : super(key: key);
 
   @override
@@ -35,6 +35,7 @@ class _CustomPageViewState extends State<CustomPageView> {
       duration: const Duration(milliseconds: 500),
       curve: Curves.ease,
     );
+    widget.onChanged(pageIndex);
   }
 
   void goToNextPage() {
