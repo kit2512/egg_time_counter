@@ -1,24 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 import '../components/components.dart';
 import '../../config/config.dart';
 import '../../data/models/models.dart';
-
-List<Item> items = <Item>[
-  Item(
-      duration: const Duration(seconds: 3),
-      name: "Soft Boiled Eggs",
-      imageUrl: "assets/images/egg_1.svg"),
-  Item(
-      duration: const Duration(seconds: 4),
-      name: "Hard Boiled Eggs",
-      imageUrl: "assets/images/egg_2.svg"),
-  Item(
-      duration: const Duration(seconds: 5),
-      name: "Liquid Boiled Egges",
-      imageUrl: "assets/images/egg_3.svg"),
-];
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({
@@ -34,7 +20,10 @@ class HomeScreen extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [kPrimaryColor.withOpacity(0.7), Colors.white],
+          colors: [
+            Provider.of<ItemManager>(context).selectedColor.withOpacity(0.7),
+            Colors.white
+          ],
           begin: Alignment.bottomCenter,
           end: Alignment.topCenter,
         ),
@@ -64,12 +53,12 @@ class HomeScreen extends StatelessWidget {
               child: SizedBox(
                 width: getPWidth(210),
                 child: Text(
-                  "Soft Boiled Eggs",
+                  Provider.of<ItemManager>(context).curerntItem.name,
                   textAlign: TextAlign.center,
                   maxLines: 2,
                   style: TextStyle(
                     fontSize: getPWidth(26),
-                    color: kPrimaryColor,
+                    color: Provider.of<ItemManager>(context).selectedColor,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -77,111 +66,59 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
           Expanded(
-              flex: 30,
-              child: CustomPageView(
-                itemBuilder: (context, index) {
-                  return SvgPicture.asset(items[index].imageUrl,
-                      fit: BoxFit.scaleDown);
-                },
-                itemCount: items.length,
-              )),
+            flex: 30,
+            child: Consumer<ItemManager>(
+              builder: (context, manager, _) {
+                return CustomPageView(
+                  itemBuilder: (context, index) {
+                    return SvgPicture.asset(manager.items[index].imageUrl,
+                        fit: BoxFit.scaleDown);
+                  },
+                  itemCount: manager.items.length,
+                  onChanged: (index) {
+                    manager.goToItem(index);
+                    Provider.of<TimerManager>(context, listen: false).reset();
+                  },
+                );
+              },
+            ),
+          ),
           Expanded(
             flex: 33,
-            child: Column(
-              children: [
-                Text(
-                  "3 minutes",
-                  style: TextStyle(
-                    fontSize: getPWidth(18),
-                    color: const Color(0xFFAA4648),
+            child: Consumer<TimerManager>(builder: (context, timerManager, _) {
+              return Stack(
+                alignment: Alignment.center,
+                children: [
+                  ClockFace(
+                    currentTime: timerManager.stringDuration,
+                    value: timerManager.remainingRatio,
                   ),
-                ),
-                SizedBox(
-                  height: getPHeight(8),
-                ),
-                SizedBox(
-                  height: getPWidth(200),
-                  child: AspectRatio(
-                    aspectRatio: 1 / 1,
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Container(
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white,
-                          ),
-                          padding: EdgeInsets.all(getPHeight(6)),
-                          constraints: const BoxConstraints.expand(),
-                          child: CircularProgressIndicator(
-                            strokeWidth: getPHeight(8),
-                            backgroundColor: kPrimaryColor,
-                            // TODO: replace with percentage
-                            value: 0.25,
-                            color: Colors.white,
-                          ),
-                        ),
-                        Text(
-                          // TODO: Replace with remaining time
-                          "2:47",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: kPrimaryColor,
-                            fontSize: getPWidth(36),
-                          ),
-                        )
-                      ],
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: RoundedButton(
+                      size: getPWidth(80),
+                      text: "Reset",
+                      onPressed: timerManager.reset,
+                      textColor: Colors.white,
+                      backgroundColor: const Color(0xFFAA4648),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      SizedBox(
-                        width: getPWidth(86),
-                        child: TextButton(
-                          style: TextButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            shape: CircleBorder(),
-                            padding: EdgeInsets.zero,
-                          ),
-                          child: Text(
-                            "Stop",
-                            style: TextStyle(
-                                fontSize: getPWidth(20),
-                                fontWeight: FontWeight.w500),
-                          ),
-                          onPressed: () {
-                            // TODO: Stop,
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        width: getPWidth(86),
-                        child: TextButton(
-                          style: TextButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            shape: CircleBorder(),
-                            padding: EdgeInsets.zero,
-                          ),
-                          child: Text(
-                            "Stop",
-                            style: TextStyle(
-                                fontSize: getPWidth(20),
-                                fontWeight: FontWeight.w500),
-                          ),
-                          onPressed: () {
-                            // TODO: Stop,
-                          },
-                        ),
-                      ),
-                    ],
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    width: getPWidth(80),
+                    child: RoundedButton(
+                      size: getPWidth(86),
+                      text: timerManager.isStarted ? "Pause" : "Start",
+                      onPressed: timerManager.isStarted
+                          ? timerManager.pause
+                          : timerManager.start,
+                    ),
                   ),
-                )
-              ],
-            ),
+                ],
+              );
+            }),
           ),
         ],
       ),

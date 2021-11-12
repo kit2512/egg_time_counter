@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:time_counter/config/config.dart';
+
+import 'data/models/models.dart';
 import 'ui/screens/screens.dart';
-import 'config/config.dart';
 
 void main() => runApp(TimeCounterApp());
 
@@ -9,14 +12,28 @@ class TimeCounterApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        splashColor: kPrimaryColor,
-        fontFamily: 'Open Sans',
-        primaryColor: kPrimaryColor,
-        iconTheme: const IconThemeData(color: kPrimaryColor),
-      ),
-      home: Home(),
-    );
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ItemManager>(
+              create: (context) => ItemManager()),
+          ChangeNotifierProxyProvider<ItemManager, TimerManager>(
+            create: (context) => TimerManager(duration: Duration()),
+            update: (context, itemManager, timerManager) =>
+                TimerManager(duration: itemManager.curerntItem.duration),
+          )
+        ],
+        child: Consumer<ItemManager>(
+          builder: (context, manager, _) {
+            return MaterialApp(
+              theme: ThemeData(
+                splashColor: kPrimaryColor,
+                fontFamily: 'Open Sans',
+                primaryColor: kPrimaryColor,
+                iconTheme: IconThemeData(color: manager.selectedColor),
+              ),
+              home: Home(),
+            );
+          },
+        ));
   }
 }
