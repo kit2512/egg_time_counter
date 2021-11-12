@@ -19,7 +19,7 @@ class ClockFace extends StatelessWidget {
     return Column(
       children: [
         Text(
-          "3 minutes",
+          "I\'ll add this title later :)",
           style: TextStyle(
             fontSize: getPWidth(18),
             color: const Color(0xFFAA4648),
