@@ -1,20 +1,12 @@
 import 'package:flutter/material.dart';
-
-import '../../config/config.dart';
-import '../../data/models/models.dart';
-
-List<Widget> pages = [
-  Container(color: Colors.blue),
-  Container(color: Colors.green),
-  Container(color: Colors.red),
-];
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomPageView extends StatefulWidget {
   final Function(int) onChanged;
   final Widget Function(BuildContext, int) itemBuilder;
   final int itemCount;
 
-  CustomPageView({
+  const CustomPageView({
     Key? key,
     required this.itemBuilder,
     required this.itemCount,
@@ -67,14 +59,14 @@ class _CustomPageViewState extends State<CustomPageView> {
           onTap: goToPreviousPage,
           child: Icon(
             Icons.arrow_back_ios_new_rounded,
-            size: getPWidth(44),
+            size: 44.w,
           ),
         ),
         Expanded(
           child: PageView.builder(
             controller: _pageController,
             itemBuilder: widget.itemBuilder,
-            itemCount: pages.length,
+            itemCount: widget.itemCount,
             onPageChanged: widget.onChanged,
           ),
         ),
@@ -82,7 +74,7 @@ class _CustomPageViewState extends State<CustomPageView> {
           onTap: goToNextPage,
           child: Icon(
             Icons.arrow_forward_ios_rounded,
-            size: getPWidth(44),
+            size: 44.w,
           ),
         ),
       ],

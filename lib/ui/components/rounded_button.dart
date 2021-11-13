@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:time_counter/data/models/models.dart';
-import '../../config/config.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RoundedButton extends StatelessWidget {
   final String text;
@@ -20,6 +20,7 @@ class RoundedButton extends StatelessWidget {
     this.textFontSize,
   }) : super(key: key);
 
+  @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: size,
@@ -34,7 +35,7 @@ class RoundedButton extends StatelessWidget {
           child: Text(
             text,
             style: TextStyle(
-              fontSize: textFontSize ?? getPWidth(18),
+              fontSize: textFontSize ?? 20.sp,
               fontWeight: FontWeight.w500,
               color:
                   textColor ?? Provider.of<ItemManager>(context).selectedColor,
