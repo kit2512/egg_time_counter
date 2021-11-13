@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:time_counter/config/config.dart';
 
 import 'home_screen.dart';
 
