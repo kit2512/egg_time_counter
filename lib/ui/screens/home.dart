@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:time_counter/config/config.dart';
 
-import '../components/components.dart';
 import 'home_screen.dart';
 
 class Home extends StatelessWidget {
@@ -9,8 +8,7 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    MediaConfig.init(context);
-    return SafeArea(
+    return const SafeArea(
       child: Scaffold(
         extendBodyBehindAppBar: true,
         body: HomeScreen(),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../components/components.dart';
-import '../../config/config.dart';
 import '../../data/models/models.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -15,8 +15,8 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(
-        vertical: getPHeight(20),
-        horizontal: getPWidth(18),
+        vertical: 20.h,
+        horizontal: 20.w,
       ),
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -32,7 +32,7 @@ class HomeScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           SizedBox(
-            height: getPHeight(50),
+            height: 50.h,
             child: Align(
               alignment: Alignment.centerLeft,
               child: IconButton(
@@ -42,7 +42,7 @@ class HomeScreen extends StatelessWidget {
                 },
                 icon: Icon(
                   Icons.menu_outlined,
-                  size: getPHeight(43),
+                  size: 44.h,
                 ),
               ),
             ),
@@ -51,13 +51,13 @@ class HomeScreen extends StatelessWidget {
             flex: 11,
             child: Center(
               child: SizedBox(
-                width: getPWidth(210),
+                width: 210.w,
                 child: Text(
                   Provider.of<ItemManager>(context).curerntItem.name,
                   textAlign: TextAlign.center,
                   maxLines: 2,
                   style: TextStyle(
-                    fontSize: getPWidth(26),
+                    fontSize: 30.sp,
                     color: Provider.of<ItemManager>(context).selectedColor,
                     fontWeight: FontWeight.bold,
                   ),
@@ -97,7 +97,7 @@ class HomeScreen extends StatelessWidget {
                     bottom: 0,
                     right: 0,
                     child: RoundedButton(
-                      size: getPWidth(80),
+                      size: 80.w,
                       text: "Reset",
                       onPressed: timerManager.reset,
                       textColor: Colors.white,
@@ -107,9 +107,9 @@ class HomeScreen extends StatelessWidget {
                   Positioned(
                     bottom: 0,
                     left: 0,
-                    width: getPWidth(80),
+                    width: 80.h,
                     child: RoundedButton(
-                      size: getPWidth(86),
+                      size: 86.h,
                       text: timerManager.isStarted ? "Pause" : "Start",
                       onPressed: timerManager.isStarted
                           ? timerManager.pause

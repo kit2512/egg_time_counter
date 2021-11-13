@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:time_counter/data/models/models.dart';
 import 'dart:math';
-
-import '../../config/config.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ClockFace extends StatelessWidget {
   final String currentTime;
@@ -19,17 +18,17 @@ class ClockFace extends StatelessWidget {
     return Column(
       children: [
         Text(
-          "3 minutes",
+          "I'll add this title later :)",
           style: TextStyle(
-            fontSize: getPWidth(18),
+            fontSize: 20.sp,
             color: const Color(0xFFAA4648),
           ),
         ),
         SizedBox(
-          height: getPHeight(8),
+          height: 8.h,
         ),
         SizedBox(
-          height: getPWidth(200),
+          height: 200.w,
           child: AspectRatio(
             aspectRatio: 1 / 1,
             child: Stack(
@@ -40,13 +39,13 @@ class ClockFace extends StatelessWidget {
                     shape: BoxShape.circle,
                     color: Colors.white,
                   ),
-                  padding: EdgeInsets.all(getPHeight(6)),
+                  padding: EdgeInsets.all(6.h),
                   constraints: const BoxConstraints.expand(),
                   child: Transform(
                     alignment: Alignment.center,
                     transform: Matrix4.rotationY(pi),
                     child: CircularProgressIndicator(
-                      strokeWidth: getPHeight(8),
+                      strokeWidth: 8.h,
                       backgroundColor: Colors.white,
                       value: value,
                       color: Provider.of<ItemManager>(context).selectedColor,
@@ -58,7 +57,7 @@ class ClockFace extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Provider.of<ItemManager>(context).selectedColor,
-                    fontSize: getPWidth(36),
+                    fontSize: 40.sp,
                   ),
                 )
               ],
